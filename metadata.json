@@ -1,0 +1,6 @@
+{
+  "name": "Prodigy AI",
+  "description": "An AI-powered productivity companion that acts like a proactive personal assistant: planning, scheduling, prioritizing, and coaching.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

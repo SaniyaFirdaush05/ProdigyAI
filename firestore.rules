@@ -1,0 +1,73 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default-deny catch-all rule
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Common helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isDocOwner() {
+      return isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    function isIncomingDocOwner() {
+      return isSignedIn() && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create, update: if isOwner(userId) 
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 256;
+      allow delete: if false;
+    }
+
+    // Tasks collection
+    match /tasks/{taskId} {
+      allow read: if isSignedIn() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if isIncomingDocOwner() 
+        && request.resource.data.title is string 
+        && request.resource.data.title.size() <= 500;
+      allow update: if isDocOwner() && isIncomingDocOwner();
+      allow delete: if isDocOwner();
+    }
+
+    // Habits collection
+    match /habits/{habitId} {
+      allow read: if isSignedIn() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if isIncomingDocOwner() 
+        && request.resource.data.title is string 
+        && request.resource.data.title.size() <= 500;
+      allow update: if isDocOwner() && isIncomingDocOwner();
+      allow delete: if isDocOwner();
+    }
+
+    // Goals collection
+    match /goals/{goalId} {
+      allow read: if isSignedIn() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if isIncomingDocOwner() 
+        && request.resource.data.title is string 
+        && request.resource.data.title.size() <= 500;
+      allow update: if isDocOwner() && isIncomingDocOwner();
+      allow delete: if isDocOwner();
+    }
+
+    // DailyAgendas collection
+    match /dailyAgendas/{agendaId} {
+      allow read: if isSignedIn() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if isIncomingDocOwner();
+      allow update: if isDocOwner() && isIncomingDocOwner();
+      allow delete: if isDocOwner();
+    }
+  }
+}

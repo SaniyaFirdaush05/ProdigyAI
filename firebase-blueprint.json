@@ -1,0 +1,92 @@
+{
+  "collections": {
+    "users": {
+      "schema": {
+        "email": "string",
+        "createdAt": "string",
+        "updatedAt": "string",
+        "name": "string"
+      },
+      "indexes": []
+    },
+    "tasks": {
+      "schema": {
+        "userId": "string",
+        "title": "string",
+        "description": "string",
+        "category": "string",
+        "deadline": "string",
+        "estimatedHours": "number",
+        "priority": "string",
+        "status": "string",
+        "subtasks": "array",
+        "dependencies": "array",
+        "focusBlocks": "array",
+        "createdAt": "string",
+        "completedAt": "string"
+      },
+      "indexes": [
+        {
+          "fields": [
+            { "fieldPath": "userId", "order": "ASCENDING" },
+            { "fieldPath": "createdAt", "order": "DESCENDING" }
+          ]
+        }
+      ]
+    },
+    "habits": {
+      "schema": {
+        "userId": "string",
+        "title": "string",
+        "category": "string",
+        "frequency": "string",
+        "currentStreak": "number",
+        "bestStreak": "number",
+        "history": "array",
+        "createdAt": "string"
+      },
+      "indexes": [
+        {
+          "fields": [
+            { "fieldPath": "userId", "order": "ASCENDING" },
+            { "fieldPath": "createdAt", "order": "DESCENDING" }
+          ]
+        }
+      ]
+    },
+    "goals": {
+      "schema": {
+        "userId": "string",
+        "title": "string",
+        "category": "string",
+        "targetDate": "string",
+        "progress": "number",
+        "subgoals": "array",
+        "createdAt": "string"
+      },
+      "indexes": [
+        {
+          "fields": [
+            { "fieldPath": "userId", "order": "ASCENDING" },
+            { "fieldPath": "createdAt", "order": "DESCENDING" }
+          ]
+        }
+      ]
+    },
+    "dailyAgendas": {
+      "schema": {
+        "userId": "string",
+        "date": "string",
+        "slots": "array"
+      },
+      "indexes": [
+        {
+          "fields": [
+            { "fieldPath": "userId", "order": "ASCENDING" },
+            { "fieldPath": "date", "order": "DESCENDING" }
+          ]
+        }
+      ]
+    }
+  }
+}
